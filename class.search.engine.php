@@ -3,13 +3,13 @@
 
 class ESearch {
 	/**
-	 * Минимальное кол символов и букв в запросе
+	 * РњРёРЅРёРјР°Р»СЊРЅРѕРµ РєРѕР» СЃРёРјРІРѕР»РѕРІ Рё Р±СѓРєРІ РІ Р·Р°РїСЂРѕСЃРµ
 	 * @var integer $minWordLength
 	 */
 	public $minWordLength = 2;
 	
 	/**
-	 * Инициализируем соединение с сервером
+	 * РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј СЃРѕРµРґРёРЅРµРЅРёРµ СЃ СЃРµСЂРІРµСЂРѕРј
 	 * @var resource $connection
 	 */
 	public $connection;
@@ -47,7 +47,7 @@ class ESearch {
 		if( $connection )
 			$this->connection = $connection;
 		else
-			throw new Exception("Неверное подключение к базе данных. Инициализируйте его правильно.");
+			throw new Exception("РќРµРІРµСЂРЅРѕРµ РїРѕРґРєР»СЋС‡РµРЅРёРµ Рє Р±Р°Р·Рµ РґР°РЅРЅС‹С…. РРЅРёС†РёР°Р»РёР·РёСЂСѓР№С‚Рµ РµРіРѕ РїСЂР°РІРёР»СЊРЅРѕ.");
 		
 	}
 	
@@ -74,7 +74,7 @@ class ESearch {
 	
 	public function createSearch( $searchstring ){
 		
-		$this->query = trim( preg_replace( '/([^a-zа-я0-9\-\_\+\s])/ui', '', $searchstring ) );
+		$this->query = trim( preg_replace( '/([^a-zР°-СЏ0-9\-\_\+\s])/ui', '', $searchstring ) );
 		
 		$tempWords = explode( ' ', $this->query );
 		
@@ -101,7 +101,7 @@ class ESearch {
 	public function setColumns( $columns = Array( ) ){
 		
 		if( !count( $columns ) )
-			throw new Exception("Укажите FULLTEXT TYPE поля.");
+			throw new Exception("РЈРєР°Р¶РёС‚Рµ FULLTEXT TYPE РїРѕР»СЏ.");
 		
 		$this->columns = $columns;
 		
@@ -146,10 +146,10 @@ class ESearch {
 		if( count( $this->columns ) > 0 ){
 			$fulltextFields = '`'. implode( '`,`', $this->columns ) . '`';
 		}else 
-			throw new Exception("Прежде чем начать поиск следует указать поля в полнотектовом индексе.");
+			throw new Exception("РџСЂРµР¶РґРµ С‡РµРј РЅР°С‡Р°С‚СЊ РїРѕРёСЃРє СЃР»РµРґСѓРµС‚ СѓРєР°Р·Р°С‚СЊ РїРѕР»СЏ РІ РїРѕР»РЅРѕС‚РµРєС‚РѕРІРѕРј РёРЅРґРµРєСЃРµ.");
 		
 		if( !$this->table )
-			throw new Exception("Прежде чем начать поиск следует указать таблицу.");
+			throw new Exception("РџСЂРµР¶РґРµ С‡РµРј РЅР°С‡Р°С‚СЊ РїРѕРёСЃРє СЃР»РµРґСѓРµС‚ СѓРєР°Р·Р°С‚СЊ С‚Р°Р±Р»РёС†Сѓ.");
 		
 		$match = 'MATCH ('.$fulltextFields.') AGAINST ('. "'". mysql_real_escape_string( $fulltextQuery ) ."'" .' IN BOOLEAN MODE)';
 		
@@ -166,7 +166,7 @@ class ESearch {
 		$this->result = mysql_query( $this->mysqlquery, $this->connection );
 		
 		if ( mysql_errno( $this->connection ) )
-			throw new Exception("Неудалось выполнить запрос. Ошибка MySQL: ". mysql_error( $this->connection ));
+			throw new Exception("РќРµСѓРґР°Р»РѕСЃСЊ РІС‹РїРѕР»РЅРёС‚СЊ Р·Р°РїСЂРѕСЃ. РћС€РёР±РєР° MySQL: ". mysql_error( $this->connection ));
 		
 		$query_function = 'mysql_fetch_' . $this->typeSet;
 		
@@ -178,7 +178,7 @@ class ESearch {
 	public function setImportantFields( $arrayFields ){
 		
 		if( gettype( $arrayFields ) != 'array' ) 
-			throw new Exception("Следует передавать важные поля как массив.");
+			throw new Exception("РЎР»РµРґСѓРµС‚ РїРµСЂРµРґР°РІР°С‚СЊ РІР°Р¶РЅС‹Рµ РїРѕР»СЏ РєР°Рє РјР°СЃСЃРёРІ.");
 		
 		$this->importantFields = $arrayFields;
 		
@@ -190,7 +190,7 @@ class ESearch {
 		
 		if( in_array( $type, $this->typeIsset ) ) $this->typeSet = $type;
 		else 
-			throw new Exception("Такого типа данных `{$type}` нет.");
+			throw new Exception("РўР°РєРѕРіРѕ С‚РёРїР° РґР°РЅРЅС‹С… `{$type}` РЅРµС‚.");
 		
 		return $this;
 		
